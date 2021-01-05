@@ -17,13 +17,13 @@ button.addEventListener('click', (e) => {
     weatherInformation.style.display = "flex";
 
 
-    if (city.value === '') {
-        return;
-    }
+    // if (city.value === '') {
+    //     return;
+    // }
 
     weatherDays.addEventListener('click', (e) => {
         weatherDays.classList.toggle('.five-days');
-        for (let i = 1; i < div.length; i++) {
+        for (let i = 0; i < div.length; i++) {
             if (weatherDays.classList.contains('.five-days')) {
                 div[i].style.display = 'none';
             } else {
@@ -57,7 +57,7 @@ button.addEventListener('click', (e) => {
                 let hourlyDiv = document.createElement('div');
                 hourlyDiv.className = 'package featured';
                 let hourlyName = document.createElement('p');
-                hourlyName = 'package-name';
+                hourlyName.className = 'package-name';
                 let hourlyHr = document.createElement('hr');
                 let hourlyTemperature = document.createElement('p');
                 hourlyTemperature.className = 'temperature';
@@ -68,25 +68,33 @@ button.addEventListener('click', (e) => {
                 let hourlyUl = document.createElement('ul');
                 hourlyUl.className = 'features';
                 let hourlyLi = document.createElement('li');
+                let hourlyWeatherTime = document.createElement('p');
+                hourlyWeatherTime.classList = 'weather-time';
+
 
                 weatherInformation.appendChild(hourlyDiv)
+                hourlyDiv.appendChild(hourlyName);
                 hourlyDiv.appendChild(hourlyHr);
                 hourlyDiv.appendChild(hourlyTemperature);
                 hourlyDiv.appendChild(hourlyDisclaimer);
                 hourlyDiv.appendChild(hourlyTime);
                 hourlyDiv.appendChild(hourlyUl);
+                hourlyDiv.appendChild(hourlyWeatherTime);
+                hourlyUl.appendChild(hourlyLi);
 
 
-                div[i].querySelector('.package-name').textContent = city.value;
-                temperature[i].innerHTML = Math.floor(data.hourly[i].temp - 273) + '&deg';
-                time[i].innerHTML = 'Влажность ' + data.hourly[i].humidity + "%";
-                disclaimer[i].innerHTML = data.hourly[i].weather[0]['description'];
-                icons[i].innerHTML = `<img src="https://openweathermap.org/img/wn/${data.hourly[i].weather[0].icon}@2x.png">`;
+               
+                
+                hourlyName.textContent = city.value;
+                hourlyTemperature.innerHTML = Math.floor(data.hourly[i].temp - 273) + '&deg';
+                hourlyTime.innerHTML = 'Влажность ' + data.hourly[i].humidity + "%";
+                hourlyDisclaimer.innerHTML = data.hourly[i].weather[0]['description'];
+                hourlyLi.innerHTML = `<img src="https://openweathermap.org/img/wn/${data.hourly[i].weather[0].icon}@2x.png">`;
+                 hourlyWeatherTime.innerHTML =  new Date(data.hourly[i].dt * 1000);
+                // let abc = new Data(3600 * 24 * 1000);
+                // console.log(abc);
 
-
-
-
-
+            
             }
 
 

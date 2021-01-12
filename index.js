@@ -1,5 +1,7 @@
 let time = document.querySelectorAll('.time');
 let weatherDays = document.querySelector('.weather-days');
+let weatherWeek = document.querySelector('.weather-week');
+let weatherMonth = document.querySelector('.weather-month');
 let city = document.querySelector('.input');
 let div = document.querySelectorAll('.package');
 let temperature = document.querySelectorAll('.temperature');
@@ -8,13 +10,13 @@ let disclaimer = document.querySelectorAll('.disclaimer');
 let icons = document.querySelectorAll('.features li');
 let weatherInformation = document.querySelector('.pricing-table');
 // weatherInformation.classList.add = '.row';
-
 // let invisible = document.querySelector('.pricing-table');
 
 
 button.addEventListener('click', (e) => {
     e.preventDefault();
     weatherInformation.style.display = "flex";
+    weatherAPI();
 })
 
 // if (city.value === '') {
@@ -30,39 +32,38 @@ weatherDays.addEventListener('click', (e) => {
             div[i].style.display = 'block';
         }
     }
+    weatherAPI();
 })
 
-fetch(`http://open.mapquestapi.com/geocoding/v1/address?key=hqZM0yzr5AMhh6Au5FZzvResHAEELg2N&location=${city.value}`)
-    .then(function (resp) {
-        return resp.json()
-    }) //convert data to json
-    .then(function (data) {
-        console.log(data.results[0].locations[0].latLng);
-        const {
-            lat,
-            lng
-        } = data.results[0].locations[0].latLng;
-        return fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&dt=1586468027&lang=ru&appid=ea04db02d64d4b2b6453bfc814cd3cf9`)
 
-    })
-    .then(function (resp) {
-        return resp.json()
-    })
-    .then(function (data) {
-        console.log(data);
+function weatherAPI() {
+    fetch(`http://open.mapquestapi.com/geocoding/v1/address?key=hqZM0yzr5AMhh6Au5FZzvResHAEELg2N&location=${city.value}`)
+        .then(function(resp) {
+            return resp.json()
+        }) //convert data to json
+        .then(function(data) {
+            console.log(data.results[0].locations[0].latLng);
+            const {
+                lat,
+                lng
+            } = data.results[0].locations[0].latLng;
+            return fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&dt=1586468027&lang=ru&appid=ea04db02d64d4b2b6453bfc814cd3cf9`)
 
-        createWeatherBlocks(data);
+        })
+        .then(function(resp) {
+            return resp.json()
+        })
+        .then(function(data) {
+            console.log(data);
+            createWeatherBlocks(data);
+        })
+        .catch(function() {
+            //catch any errors
+        });
+}
 
-
-    })
-    .catch(function () {
-
-        //catch any errors
-    });
-
-
-function createWeatherBlocks(dataInfo){
-
+function createWeatherBlocks(dataInfo) {
+    weatherAPI();
     for (let i = 0; i < data.hourly.length; i++) {
         let hourlyDiv = document.createElement('div');
         hourlyDiv.className = 'package featured';
@@ -99,6 +100,5 @@ function createWeatherBlocks(dataInfo){
         hourlyWeatherTime.innerHTML = new Date(data.hourly[i].dt * 1000);
         // let abc = new Data(3600 * 24 * 1000);
         // console.log(abc);
-
     }
 }

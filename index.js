@@ -16,7 +16,6 @@ let weatherInformation = document.querySelector('.pricing-table');
 button.addEventListener('click', (e) => {
     e.preventDefault();
     weatherInformation.style.display = "flex";
-    weatherAPI();
 })
 
 // if (city.value === '') {
@@ -32,7 +31,12 @@ weatherDays.addEventListener('click', (e) => {
             div[i].style.display = 'block';
         }
     }
+    weatherInformation.style.display = "flex";
     weatherAPI();
+})
+
+weatherWeek.addEventListener('click', (e) => {
+
 })
 
 
@@ -47,6 +51,7 @@ function weatherAPI() {
                 lat,
                 lng
             } = data.results[0].locations[0].latLng;
+
             return fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&dt=1586468027&lang=ru&appid=ea04db02d64d4b2b6453bfc814cd3cf9`)
 
         })
@@ -54,8 +59,9 @@ function weatherAPI() {
             return resp.json()
         })
         .then(function(data) {
-            console.log(data);
             createWeatherBlocks(data);
+            console.log(data);
+
         })
         .catch(function() {
             //catch any errors
@@ -63,8 +69,7 @@ function weatherAPI() {
 }
 
 function createWeatherBlocks(dataInfo) {
-    weatherAPI();
-    for (let i = 0; i < data.hourly.length; i++) {
+    for (let i = 0; i < dataInfo.hourly.length; i++) {
         let hourlyDiv = document.createElement('div');
         hourlyDiv.className = 'package featured';
         let hourlyName = document.createElement('p');
@@ -80,9 +85,10 @@ function createWeatherBlocks(dataInfo) {
         hourlyUl.className = 'features';
         let hourlyLi = document.createElement('li');
         let hourlyWeatherTime = document.createElement('p');
-        hourlyWeatherTime.classList = 'weather-time';
+        hourlyWeatherTime.className = 'weather-time';
 
-        weatherInformation.appendChild(hourlyDiv)
+
+        weatherInformation.appendChild(hourlyDiv);
         hourlyDiv.appendChild(hourlyName);
         hourlyDiv.appendChild(hourlyHr);
         hourlyDiv.appendChild(hourlyTemperature);
@@ -93,12 +99,15 @@ function createWeatherBlocks(dataInfo) {
         hourlyUl.appendChild(hourlyLi);
 
         hourlyName.textContent = city.value;
-        hourlyTemperature.innerHTML = Math.floor(data.hourly[i].temp - 273) + '&deg';
-        hourlyTime.innerHTML = 'Влажность ' + data.hourly[i].humidity + "%";
-        hourlyDisclaimer.innerHTML = data.hourly[i].weather[0]['description'];
-        hourlyLi.innerHTML = `<img src="https://openweathermap.org/img/wn/${data.hourly[i].weather[0].icon}@2x.png">`;
-        hourlyWeatherTime.innerHTML = new Date(data.hourly[i].dt * 1000);
-        // let abc = new Data(3600 * 24 * 1000);
-        // console.log(abc);
+        hourlyTemperature.innerHTML = Math.floor(dataInfo.hourly[i].temp - 273) + '&deg';
+        hourlyTime.innerHTML = 'Влажность ' + dataInfo.hourly[i].humidity + "%";
+        hourlyDisclaimer.innerHTML = dataInfo.hourly[i].weather[0]['description'];
+        hourlyLi.innerHTML = `<img src="https://openweathermap.org/img/wn/${dataInfo.hourly[i].weather[0].icon}@2x.png">`;
+        hourlyWeatherTime.innerHTML = new Date(dataInfo.hourly[i].dt * 1000);
     }
+}
+
+
+function createWeatherDailyBlocks(dataInfo) {
+
 }

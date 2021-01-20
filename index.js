@@ -48,10 +48,7 @@ weatherDays.addEventListener('click', (e) => {
     }
     weatherInformation.style.display = "flex";
     weatherAPIHour();
-
-
 })
-
 
 function weatherAPIHour() {
     fetch(`http://open.mapquestapi.com/geocoding/v1/address?key=hqZM0yzr5AMhh6Au5FZzvResHAEELg2N&location=${city.value}`)
@@ -112,6 +109,7 @@ function weatherAPIWeek() {
 
 
 function createWeatherBlocks(dataInfo) {
+    weatherInformation.textContent = "";
     for (let i = 0; i < dataInfo.length; i++) {
         let hourlyDiv = document.createElement('div');
         hourlyDiv.className = 'package featured';
@@ -145,11 +143,21 @@ function createWeatherBlocks(dataInfo) {
         hourlyTime.innerHTML = 'Влажность ' + dataInfo[i].humidity + "%";
         hourlyDisclaimer.innerHTML = dataInfo[i].weather[0]['description'];
         hourlyLi.innerHTML = `<img src="https://openweathermap.org/img/wn/${dataInfo[i].weather[0].icon}@2x.png">`;
-        hourlyWeatherTime.innerHTML = new Date(dataInfo[i].dt * 1000);
+
+        let time = new Date(dataInfo[i].dt);
+        let formatter = new Intl.DateTimeFormat("ru");
+        let hourFormatter = new Intl.DateTimeFormat("ru", {
+            hour: "numeric",
+            minute: "numeric",
+            second: "numeric"
+        });
+        hourlyWeatherTime.innerHTML = `${formatter.format(time * 1000)}, ${hourFormatter.format(time)} `;
+
     }
 }
 
 function createWeekWeatherBlocks(dataInfo) {
+    weatherInformation.textContent = "";
     for (let i = 0; i < dataInfo.length; i++) {
         let hourlyDiv = document.createElement('div');
         hourlyDiv.className = 'package featured';
@@ -183,6 +191,10 @@ function createWeekWeatherBlocks(dataInfo) {
         hourlyTime.innerHTML = 'Влажность ' + dataInfo[i].humidity + "%";
         hourlyDisclaimer.innerHTML = dataInfo[i].weather[0]['description'];
         hourlyLi.innerHTML = `<img src="https://openweathermap.org/img/wn/${dataInfo[i].weather[0].icon}@2x.png">`;
-        hourlyWeatherTime.innerHTML = new Date(dataInfo[i].dt * 1000);
+
+        let time = new Date(dataInfo[i].dt);
+        let formatter = new Intl.DateTimeFormat("ru");
+        hourlyWeatherTime.innerHTML = formatter.format(time * 1000);
+
     }
 }

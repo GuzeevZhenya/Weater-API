@@ -88,7 +88,6 @@ function weatherAPIWeek() {
                 lat,
                 lng
             } = data.results[0].locations[0].latLng;
-
             return fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&dt=1586468027&lang=ru&appid=ea04db02d64d4b2b6453bfc814cd3cf9`)
 
         })

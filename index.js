@@ -55,12 +55,12 @@ function createWeatherCard(weatherInfo, cityName, weatherType) {
 }
 
 function getTimeString(unixTime) {
-  const time = new Date(unixTime);
+  const time = new Date(unixTime * 1000);
   const formatter = new Intl.DateTimeFormat("ru");
   const hourFormatter = new Intl.DateTimeFormat("ru", {
     hour: "numeric",
     minute: "numeric",
     second: "numeric",
   });
-  return `${formatter.format(time * 1000)}, ${hourFormatter.format(time)} `;
+  return `${formatter.format(time)}, ${hourFormatter.format(time)} `;
 }

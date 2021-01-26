@@ -48,8 +48,6 @@ weatherDays.addEventListener('click', (e) => {
     }
     weatherInformation.style.display = "flex";
     weatherAPIHour();
-
-
 })
 
 
@@ -91,7 +89,6 @@ function weatherAPIWeek() {
                 lat,
                 lng
             } = data.results[0].locations[0].latLng;
-
             return fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lng}&dt=1586468027&lang=ru&appid=ea04db02d64d4b2b6453bfc814cd3cf9`)
 
         })
@@ -108,11 +105,7 @@ function weatherAPIWeek() {
         });
 }
 
-
-
-
-function createWeatherBlocks(dataInfo) {
-    for (let i = 0; i < dataInfo.length; i++) {
+function createWeatherCard(dataInfo,forecastType){
         let hourlyDiv = document.createElement('div');
         hourlyDiv.className = 'package featured';
         let hourlyName = document.createElement('p');
@@ -130,7 +123,6 @@ function createWeatherBlocks(dataInfo) {
         let hourlyWeatherTime = document.createElement('p');
         hourlyWeatherTime.className = 'weather-time';
 
-        weatherInformation.appendChild(hourlyDiv);
         hourlyDiv.appendChild(hourlyName);
         hourlyDiv.appendChild(hourlyHr);
         hourlyDiv.appendChild(hourlyTemperature);
@@ -141,48 +133,27 @@ function createWeatherBlocks(dataInfo) {
         hourlyUl.appendChild(hourlyLi);
 
         hourlyName.textContent = city.value;
-        hourlyTemperature.innerHTML = Math.floor(dataInfo[i].temp - 273) + '&deg';
-        hourlyTime.innerHTML = 'Влажность ' + dataInfo[i].humidity + "%";
-        hourlyDisclaimer.innerHTML = dataInfo[i].weather[0]['description'];
-        hourlyLi.innerHTML = `<img src="https://openweathermap.org/img/wn/${dataInfo[i].weather[0].icon}@2x.png">`;
-        hourlyWeatherTime.innerHTML = new Date(dataInfo[i].dt * 1000);
-    }
+        
+        hourlyTemperature.innerHTML = Math.floor(dataInfo.temp - 273) + '&deg';//меняется в зависимости от forecastType на temp.day
+        hourlyTime.innerHTML = 'Влажность ' + dataInfo.humidity + "%";
+        hourlyDisclaimer.innerHTML = dataInfo.weather['description'];
+        hourlyLi.innerHTML = `<img src="https://openweathermap.org/img/wn/${dataInfo.weather[0].icon}@2x.png">`;
+        hourlyWeatherTime.innerHTML = new Date(dataInfo.dt * 1000);
+
+        return hourlyDiv;
+}
+
+
+function createWeatherBlocks(dataInfo) {
+    weatherInformation.innerHTML = "";
+    for (let i = 0; i < dataInfo.length; i++) {
+        weatherInformation.appendChild(createWeatherCard(dataInfo[i],'daily'))
+     }
 }
 
 function createWeekWeatherBlocks(dataInfo) {
+    weatherInformation.innerHTML = "";
     for (let i = 0; i < dataInfo.length; i++) {
-        let hourlyDiv = document.createElement('div');
-        hourlyDiv.className = 'package featured';
-        let hourlyName = document.createElement('p');
-        hourlyName.className = 'package-name';
-
-        let hourlyTemperature = document.createElement('p');
-        hourlyTemperature.className = 'temperature';
-        let hourlyDisclaimer = document.createElement('p');
-        hourlyDisclaimer.className = 'disclaimer';
-        let hourlyTime = document.createElement('p');
-        hourlyTime.className = 'time';
-        let hourlyUl = document.createElement('ul');
-        hourlyUl.className = 'features';
-        let hourlyLi = document.createElement('li');
-        let hourlyWeatherTime = document.createElement('p');
-        hourlyWeatherTime.className = 'weather-time';
-
-        weatherInformation.appendChild(hourlyDiv);
-        hourlyDiv.appendChild(hourlyName);
-
-        hourlyDiv.appendChild(hourlyTemperature);
-        hourlyDiv.appendChild(hourlyDisclaimer);
-        hourlyDiv.appendChild(hourlyTime);
-        hourlyDiv.appendChild(hourlyUl);
-        hourlyDiv.appendChild(hourlyWeatherTime);
-        hourlyUl.appendChild(hourlyLi);
-
-        hourlyName.textContent = city.value;
-        hourlyTemperature.innerHTML = Math.floor(dataInfo[i].temp.day - 273) + '&deg';
-        hourlyTime.innerHTML = 'Влажность ' + dataInfo[i].humidity + "%";
-        hourlyDisclaimer.innerHTML = dataInfo[i].weather[0]['description'];
-        hourlyLi.innerHTML = `<img src="https://openweathermap.org/img/wn/${dataInfo[i].weather[0].icon}@2x.png">`;
-        hourlyWeatherTime.innerHTML = new Date(dataInfo[i].dt * 1000);
+       weatherInformation.appendChild(createWeatherCard(dataInfo[i],'week'))
     }
 }

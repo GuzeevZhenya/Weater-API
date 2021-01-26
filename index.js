@@ -6,8 +6,6 @@ const city = document.querySelector('.input');
 const weatherApiKey = "ea04db02d64d4b2b6453bfc814cd3cf9";
 const geolocationApiKey = "hqZM0yzr5AMhh6Au5FZzvResHAEELg2N";
 
-
-
 weatherWeek.addEventListener('click', () => weatherAPI('daily'));
 weatherDays.addEventListener('click', () => weatherAPI('hourly'));
 
@@ -56,10 +54,8 @@ function createWeatherCard(weatherInfo, cityName, weatherType) {
     const weatherBlock = document.createElement("div");
     weatherBlock.className = "package featured";
     weatherBlock.innerHTML = cardMarkup;
-
     return weatherBlock;
 }
-
 
 function getTimeString(unixTime) {
     const time = new Date(unixTime * 1000);
